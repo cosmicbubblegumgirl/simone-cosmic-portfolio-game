@@ -556,6 +556,18 @@ h3 {
 
 .project-card .launch-button {
   grid-column: 1 / -1;
+  border-color: rgba(199, 255, 91, 0.92);
+  background: #c7ff5b;
+  color: #061018;
+  text-shadow: none;
+  box-shadow: 0 8px 18px rgba(199, 255, 91, 0.18);
+}
+
+.project-card .launch-button:hover,
+.project-card .launch-button:focus-visible {
+  border-color: #ffffff;
+  background: #d6ff7a;
+  color: #061018;
 }
 
 .pill-row {
@@ -1857,6 +1869,21 @@ body.mission-launched .mission-card:is(:hover, :focus-within) {
   border-color: #ffffff;
   background: #b893ff;
   color: #fff;
+}
+
+.project-card .launch-button {
+  border-color: rgba(199, 255, 91, 0.92);
+  background: #c7ff5b;
+  color: #061018;
+  text-shadow: none;
+  box-shadow: 0 8px 18px rgba(199, 255, 91, 0.18);
+}
+
+.project-card .launch-button:hover,
+.project-card .launch-button:focus-visible {
+  border-color: #ffffff;
+  background: #d6ff7a;
+  color: #061018;
 }
 
 #autoPilot {
