@@ -48,6 +48,17 @@ body::before {
   background-position: 0 0, 38px 70px;
   background-size: 110px 110px, 170px 170px;
   opacity: 0.35;
+  animation: starDrift 32s linear infinite;
+}
+
+@keyframes starDrift {
+  from {
+    background-position: 0 0, 38px 70px;
+  }
+
+  to {
+    background-position: 220px 160px, -132px 260px;
+  }
 }
 
 a {
@@ -461,38 +472,54 @@ h3 {
 
 .theatre-layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.94fr) minmax(360px, 1.06fr);
-  gap: 18px;
+  gap: 22px;
   align-items: start;
 }
 
 .project-list {
   display: grid;
-  max-height: 86vh;
-  gap: 12px;
-  overflow: auto;
-  padding-right: 6px;
-  scrollbar-color: var(--teal) rgba(16, 19, 18, 0.08);
+  grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+  gap: 16px;
 }
 
 .project-card {
+  position: relative;
   display: grid;
-  gap: 12px;
-  padding: 16px;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 14px;
+  min-height: 310px;
+  padding: 18px;
   border: 1px solid var(--line);
-  border-left: 5px solid var(--accent, var(--teal));
+  border-top: 5px solid var(--accent, var(--teal));
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
+  background:
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--accent, var(--teal)) 26%, transparent), transparent 32%),
+    rgba(255, 255, 255, 0.9);
   cursor: pointer;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+  overflow: hidden;
+}
+
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: auto 18px 0;
+  height: 3px;
+  border-radius: 999px 999px 0 0;
+  background: linear-gradient(90deg, transparent, var(--accent, var(--teal)), transparent);
+  opacity: 0.72;
 }
 
 .project-card:hover,
 .project-card:focus-within,
 .project-card.active {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
   border-color: rgba(16, 19, 18, 0.32);
-  box-shadow: 0 16px 40px rgba(16, 19, 18, 0.12);
+  box-shadow: 0 22px 55px rgba(16, 19, 18, 0.16);
 }
 
 .project-card.active {
@@ -508,12 +535,24 @@ h3 {
 
 .project-card h3 {
   margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  line-height: 1.14;
 }
 
 .project-card p {
   margin: 0;
   color: var(--muted);
   font-size: 0.94rem;
+}
+
+.project-card .stage-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: auto;
+}
+
+.project-card .launch-button {
+  grid-column: 1 / -1;
 }
 
 .pill-row {
@@ -541,51 +580,18 @@ h3 {
   color: #9c331b;
 }
 
-.mini-preview {
-  position: relative;
-  min-height: 132px;
+.sandbox-preload {
+  position: absolute;
+  width: 1px;
+  height: 1px;
   overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background:
-    repeating-linear-gradient(135deg, rgba(0, 166, 166, 0.08) 0 10px, rgba(199, 255, 91, 0.12) 10px 20px),
-    #fff;
-}
-
-.mini-preview iframe {
-  width: 100%;
-  height: 172px;
-  border: 0;
-  transform: scale(0.78);
-  transform-origin: top left;
-  width: 128%;
+  opacity: 0;
   pointer-events: none;
-  background: #fff;
-}
-
-.mini-preview button {
-  position: absolute;
-  inset: auto 10px 10px auto;
-}
-
-.preview-status {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  min-height: 30px;
-  padding: 5px 9px;
-  border: 1px solid rgba(97, 244, 255, 0.72);
-  border-radius: 999px;
-  background: rgba(5, 8, 19, 0.84);
-  color: #ffffff;
-  font-size: 0.76rem;
-  font-weight: 900;
-  box-shadow: 0 0 18px rgba(97, 244, 255, 0.18);
 }
 
 .sandbox-stage {
-  position: sticky;
-  top: 86px;
+  position: relative;
+  top: auto;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -1002,7 +1008,6 @@ h3 {
   .sandbox-stage {
     position: relative;
     top: auto;
-    order: -1;
   }
 
   .skill-grid {

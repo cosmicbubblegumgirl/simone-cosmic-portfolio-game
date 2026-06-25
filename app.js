@@ -630,7 +630,7 @@ function renderProjects() {
             <span class="pill">Live</span>
             ${project.featured ? '<span class="pill featured-pill">CV pick</span>' : ""}
           </div>
-          <div class="mini-preview">
+          <div class="sandbox-preload" aria-hidden="true">
             <iframe
               title="${escapeHtml(project.title)} mini sandbox"
               data-src="${escapeHtml(project.url)}"
@@ -683,13 +683,13 @@ function selectProject(index, scrollStage = false) {
 
 function loadMiniPreview(button) {
   const card = button.closest(".project-card");
-  const frame = card.querySelector(".mini-preview iframe");
+  const frame = card.querySelector(".sandbox-preload iframe");
   frame.src = frame.dataset.src;
 }
 
 function preloadRenderedSandboxes() {
-  document.querySelectorAll(".project-card .mini-preview iframe").forEach((frame, index) => {
-    const status = frame.closest(".mini-preview")?.querySelector(".preview-status");
+  document.querySelectorAll(".project-card .sandbox-preload iframe").forEach((frame, index) => {
+    const status = frame.closest(".sandbox-preload")?.querySelector(".preview-status");
     frame.addEventListener(
       "load",
       () => {
@@ -706,7 +706,7 @@ function preloadRenderedSandboxes() {
 }
 
 function loadVisiblePreviews() {
-  document.querySelectorAll(".project-card .mini-preview iframe").forEach((frame) => {
+  document.querySelectorAll(".project-card .sandbox-preload iframe").forEach((frame) => {
     frame.src = frame.dataset.src;
   });
   elements.loadVisible.textContent = "Previews refreshed";
