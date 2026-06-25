@@ -421,7 +421,6 @@ const projects = [
 
 const categories = [
   "All",
-  "CV picks",
   "SAP + Learning",
   "Product",
   "Creative",
@@ -564,9 +563,7 @@ function getFilteredProjects() {
   const query = state.query.trim().toLowerCase();
   return projects.filter((project) => {
     const inCategory =
-      state.category === "All" ||
-      (state.category === "CV picks" && project.featured) ||
-      project.category === state.category;
+      state.category === "All" || project.category === state.category;
 
     const haystack = [
       project.title,
@@ -588,9 +585,7 @@ function renderFilters() {
       const count =
         category === "All"
           ? projects.length
-          : category === "CV picks"
-            ? projects.filter((project) => project.featured).length
-            : projects.filter((project) => project.category === category).length;
+          : projects.filter((project) => project.category === category).length;
 
       return `
         <button class="filter-chip" type="button" data-category="${escapeHtml(category)}" aria-pressed="${category === state.category}">
@@ -628,7 +623,6 @@ function renderProjects() {
           <div class="pill-row">
             <span class="pill">${escapeHtml(project.category)}</span>
             <span class="pill">Live</span>
-            ${project.featured ? '<span class="pill featured-pill">CV pick</span>' : ""}
           </div>
           <div class="sandbox-preload" aria-hidden="true">
             <iframe
