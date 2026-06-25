@@ -9,7 +9,7 @@
   --teal: #61f4ff;
   --teal-dark: #21c6d9;
   --spring: #c7ff5b;
-  --coral: #ff6bcb;
+  --coral: #a76cff;
   --blue: #7c8dff;
   --violet: #a76cff;
   --shadow: 0 28px 90px rgba(0, 0, 0, 0.45);
@@ -30,7 +30,7 @@ body {
   background:
     radial-gradient(circle at 15% 15%, rgba(97, 244, 255, 0.14), transparent 28%),
     radial-gradient(circle at 80% 20%, rgba(167, 108, 255, 0.16), transparent 32%),
-    radial-gradient(circle at 55% 88%, rgba(255, 107, 203, 0.12), transparent 26%),
+    radial-gradient(circle at 55% 88%, rgba(167, 108, 255, 0.12), transparent 26%),
     #050711;
   color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -100,7 +100,7 @@ input {
   border-radius: 14px;
   background: rgba(5, 7, 18, 0.9);
   color: #fff;
-  box-shadow: 0 0 0 1px rgba(255, 143, 214, 0.14), 0 18px 46px rgba(0, 0, 0, 0.38);
+  box-shadow: 0 0 0 1px rgba(167, 108, 255, 0.18), 0 18px 46px rgba(0, 0, 0, 0.38);
   backdrop-filter: blur(18px);
 }
 
@@ -127,8 +127,8 @@ input {
 }
 
 .window-dots span:nth-child(1) {
-  background: #ff65a8;
-  color: #ff65a8;
+  background: #a76cff;
+  color: #a76cff;
 }
 
 .window-dots span:nth-child(2) {
@@ -174,7 +174,7 @@ input {
 .nav-links a:first-child,
 .nav-links a:hover,
 .nav-links a:focus-visible {
-  background: rgba(255, 101, 168, 0.42);
+  background: rgba(167, 108, 255, 0.42);
   color: #fff;
 }
 
@@ -1124,7 +1124,7 @@ main {
 
 #autoPilot {
   border-color: rgba(255, 225, 106, 0.98);
-  background: linear-gradient(135deg, #ffe16a, #ff8fd6);
+  background: linear-gradient(135deg, #ffe16a, #a76cff);
   color: #071018;
   font-weight: 950;
   text-shadow: none;
@@ -1142,13 +1142,13 @@ main {
 }
 
 #autoPilot[aria-pressed="false"] {
-  border-color: rgba(255, 143, 214, 0.94);
-  background: linear-gradient(135deg, #25134b, #8c2f74);
+  border-color: rgba(167, 108, 255, 0.94);
+  background: linear-gradient(135deg, #25134b, #5b2f8c);
   color: #ffffff;
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.62);
   box-shadow:
     0 0 0 2px rgba(255, 255, 255, 0.1),
-    0 0 24px rgba(255, 143, 214, 0.32),
+    0 0 24px rgba(167, 108, 255, 0.32),
     0 14px 32px rgba(0, 0, 0, 0.36);
 }
 
@@ -1260,7 +1260,7 @@ body.manual-flight #galaxyCanvas {
   width: 0%;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #ffe16a, #61f4ff, #ff8fd6);
+  background: linear-gradient(90deg, #ffe16a, #61f4ff, #a76cff);
   box-shadow: 0 0 18px rgba(97, 244, 255, 0.36);
   transition: width 320ms ease;
 }
@@ -1278,7 +1278,7 @@ body.manual-flight #galaxyCanvas {
   border: 1px solid rgba(97, 244, 255, 0.24);
   border-radius: 8px;
   background:
-    linear-gradient(135deg, rgba(97, 244, 255, 0.1), rgba(255, 143, 214, 0.08)),
+    linear-gradient(135deg, rgba(97, 244, 255, 0.1), rgba(167, 108, 255, 0.08)),
     rgba(5, 8, 19, 0.78);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 0 34px rgba(97, 244, 255, 0.14);
   backdrop-filter: blur(18px);
@@ -1493,7 +1493,7 @@ body.manual-flight #galaxyCanvas {
 
 .mobile-flight-pad button[data-dock] {
   grid-column: 1 / -1;
-  background: linear-gradient(135deg, #ffe16a, #ff8fd6);
+  background: linear-gradient(135deg, #ffe16a, #a76cff);
   color: #071018;
 }
 
@@ -1665,9 +1665,9 @@ body.manual-flight #galaxyCanvas {
 }
 
 .featured-pill {
-  border-color: rgba(255, 107, 203, 0.5);
-  background: rgba(255, 107, 203, 0.13);
-  color: #ffd8f0;
+  border-color: rgba(167, 108, 255, 0.5);
+  background: rgba(167, 108, 255, 0.13);
+  color: #eadcff;
 }
 
 .sandbox-stage {
@@ -1759,7 +1759,7 @@ body.manual-flight #galaxyCanvas {
   overflow: hidden;
   padding-top: 64px;
   background:
-    radial-gradient(circle at 28% 26%, rgba(255, 101, 168, 0.18), transparent 28%),
+    radial-gradient(circle at 28% 26%, rgba(167, 108, 255, 0.18), transparent 28%),
     radial-gradient(circle at 84% 28%, rgba(97, 244, 255, 0.12), transparent 34%),
     linear-gradient(120deg, rgba(55, 22, 88, 0.56), rgba(3, 18, 37, 0.62));
   cursor: grab;
@@ -1811,7 +1811,7 @@ body.manual-flight .mission-control {
     #050711;
   box-shadow:
     0 0 0 2px rgba(5, 8, 19, 0.82),
-    0 0 0 4px rgba(255, 101, 168, 0.34),
+    0 0 0 4px rgba(167, 108, 255, 0.34),
     0 20px 70px rgba(0, 0, 0, 0.42);
 }
 
@@ -1845,17 +1845,17 @@ body.mission-launched .mission-card:is(:hover, :focus-within) {
 }
 
 .button.primary {
-  border-color: rgba(255, 101, 168, 0.95);
-  background: #ff65a8;
+  border-color: rgba(167, 108, 255, 0.95);
+  background: #a76cff;
   color: #fff;
   text-shadow: none;
-  box-shadow: 0 8px 22px rgba(255, 101, 168, 0.24);
+  box-shadow: 0 8px 22px rgba(167, 108, 255, 0.24);
 }
 
 .button.primary:hover,
 .button.primary:focus-visible {
   border-color: #ffffff;
-  background: #ff7db7;
+  background: #b893ff;
   color: #fff;
 }
 
@@ -1900,7 +1900,7 @@ body.mission-launched .mission-card:is(:hover, :focus-within) {
 
 .signal-strip span:nth-child(2) strong,
 .signal-strip span:nth-child(3) strong {
-  color: #ff65a8;
+  color: #a76cff;
 }
 
 .hologram-panel {
@@ -1962,10 +1962,10 @@ body.mission-launched .mission-card:is(:hover, :focus-within) {
 }
 
 body.manual-flight .mission-hud {
-  border-color: rgba(255, 101, 168, 0.72);
+  border-color: rgba(167, 108, 255, 0.72);
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.08),
-    0 0 34px rgba(255, 101, 168, 0.18);
+    0 0 34px rgba(167, 108, 255, 0.18);
 }
 
 .flight-deck {
@@ -1988,7 +1988,7 @@ body.manual-flight .mission-hud {
   height: 26px;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 999px;
-  background: rgba(255, 101, 168, 0.22);
+  background: rgba(167, 108, 255, 0.22);
   color: #ffffff;
   cursor: pointer;
   font-size: 0.74rem;
@@ -2043,10 +2043,10 @@ body.docking-active .mission-control {
 }
 
 .launch-sequence.docking-sequence {
-  border-color: rgba(255, 101, 168, 0.82);
+  border-color: rgba(167, 108, 255, 0.82);
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.08),
-    0 0 52px rgba(255, 101, 168, 0.28);
+    0 0 52px rgba(167, 108, 255, 0.28);
 }
 
 body.project-docked .sandbox-stage {

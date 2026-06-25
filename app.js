@@ -61,7 +61,7 @@ const projects = [
     repo: "https://github.com/cosmicbubblegumgirl/normal_is-_overrated",
     category: "Wellness",
     language: "JavaScript",
-    accent: "#ef5da8",
+    accent: "#a76cff",
     featured: true,
     summary: "I designed a Moonbeam Mind experience that frames neurodiversity and self-understanding through a distinctive UI."
   },
@@ -116,7 +116,7 @@ const projects = [
     repo: "https://github.com/cosmicbubblegumgirl/zemiras-pixels",
     category: "Creative",
     language: "JavaScript",
-    accent: "#ef5da8",
+    accent: "#a76cff",
     featured: false,
     summary: "I created a pixel-forward creative site with a visual identity built for exploration."
   },
@@ -347,7 +347,7 @@ const projects = [
     repo: "https://github.com/cosmicbubblegumgirl/QUantumcreations_simone-govender-portfoio",
     category: "Portfolio",
     language: "HTML",
-    accent: "#ef5da8",
+    accent: "#a76cff",
     featured: false,
     summary: "I built a colorful portfolio experiment with a playful creative identity."
   },
@@ -369,7 +369,7 @@ const projects = [
     repo: "https://github.com/cosmicbubblegumgirl/giftlink-sparkle",
     category: "Creative",
     language: "JavaScript",
-    accent: "#ef5da8",
+    accent: "#a76cff",
     featured: false,
     summary: "I created a polished gift-link project with a bright, social product direction."
   },
@@ -380,7 +380,7 @@ const projects = [
     repo: "https://github.com/cosmicbubblegumgirl/moonbeammind",
     category: "Wellness",
     language: "JavaScript",
-    accent: "#ef5da8",
+    accent: "#a76cff",
     featured: false,
     summary: "I built a spectrum-test concept focused on self-knowledge and reflective interaction."
   },
@@ -1344,7 +1344,7 @@ function createShip(THREE) {
     color: 0x1b2848,
     metalness: 0.58,
     roughness: 0.26,
-    emissive: 0xff8fd6,
+    emissive: 0xa76cff,
     emissiveIntensity: 0.42
   });
 
@@ -1392,7 +1392,7 @@ function createShip(THREE) {
   beacon.position.set(0, 0.86, 0.52);
 
   const flameMaterial = new THREE.MeshBasicMaterial({
-    color: 0xff8fd6,
+    color: 0xa76cff,
     transparent: true,
     opacity: 0.78
   });
@@ -1409,7 +1409,7 @@ function createShip(THREE) {
   rightFlame.position.x = 0.48;
   rightFlame.userData.thruster = true;
 
-  const engineGlow = new THREE.PointLight(0xff8fd6, 0.75, 16);
+  const engineGlow = new THREE.PointLight(0xa76cff, 0.75, 16);
   engineGlow.position.set(0, 0, 2.35);
 
   ship.add(
@@ -1464,7 +1464,7 @@ function createNebula(THREE, count) {
   const palette = [
     new THREE.Color(0x61f4ff),
     new THREE.Color(0xa76cff),
-    new THREE.Color(0xff6bcb),
+    new THREE.Color(0xa76cff),
     new THREE.Color(0xc7ff5b)
   ];
 
@@ -1616,7 +1616,7 @@ function launchSparkleShot(THREE, index, ship, destinations) {
 
   const start = ship.position.clone().add(new THREE.Vector3(0, 0.18, -2.75));
   const target = destination.position.clone();
-  const color = new THREE.Color(destination.project.accent || "#ff8fd6");
+  const color = new THREE.Color(destination.project.accent || "#a76cff");
   const material = new THREE.MeshBasicMaterial({
     color,
     transparent: true,
