@@ -64,6 +64,10 @@ input {
   font: inherit;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 .section-shell {
   width: min(var(--max), calc(100% - 36px));
   margin: 0 auto;
@@ -564,6 +568,21 @@ h3 {
   inset: auto 10px 10px auto;
 }
 
+.preview-status {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  min-height: 30px;
+  padding: 5px 9px;
+  border: 1px solid rgba(97, 244, 255, 0.72);
+  border-radius: 999px;
+  background: rgba(5, 8, 19, 0.84);
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 900;
+  box-shadow: 0 0 18px rgba(97, 244, 255, 0.18);
+}
+
 .sandbox-stage {
   position: sticky;
   top: 86px;
@@ -613,8 +632,8 @@ h3 {
 
 .sandbox-stage iframe {
   width: 100%;
-  height: min(64vh, 610px);
-  min-height: 420px;
+  height: min(72vh, 720px);
+  min-height: 560px;
   border: 0;
   background: #fff;
 }
@@ -1763,8 +1782,8 @@ body.manual-flight .mission-control {
 }
 
 .mission-overlay {
-  grid-template-columns: minmax(320px, 710px);
-  width: min(710px, 100%);
+  grid-template-columns: minmax(300px, 590px);
+  width: min(590px, 100%);
 }
 
 .mission-card,
@@ -1788,12 +1807,12 @@ body.manual-flight .mission-control {
 }
 
 .mission-card {
-  max-width: 710px;
+  max-width: 590px;
   padding: clamp(26px, 4vw, 36px);
 }
 
 .mission-card h1 {
-  font-size: clamp(2.5rem, 4.4vw, 3.72rem);
+  font-size: clamp(2.35rem, 4vw, 3.38rem);
   line-height: 1.08;
 }
 
@@ -1805,6 +1824,15 @@ body.manual-flight .mission-control {
 
 .mission-control .commander-card {
   display: none;
+}
+
+body.mission-launched .mission-card {
+  opacity: 0.26;
+  transform: translateX(-22px) scale(0.985);
+}
+
+body.mission-launched .mission-card:is(:hover, :focus-within) {
+  opacity: 0.84;
 }
 
 .button.primary {
@@ -1868,11 +1896,11 @@ body.manual-flight .mission-control {
 
 .hologram-panel {
   position: absolute;
-  top: 358px;
+  top: 346px;
   right: clamp(34px, 5vw, 58px);
   z-index: 5;
   width: min(390px, calc(100% - 32px));
-  max-height: calc(100svh - 386px);
+  max-height: calc(100svh - 374px);
   transform: none;
   scrollbar-gutter: stable;
 }
@@ -1932,17 +1960,102 @@ body.manual-flight .mission-hud {
 }
 
 .flight-deck {
-  right: clamp(440px, 40vw, 520px);
+  left: clamp(270px, 22vw, 300px);
+  right: clamp(416px, 38vw, 510px);
   bottom: 18px;
-  z-index: 6;
+  z-index: 7;
+  align-items: stretch;
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(250px, 1.15fr);
+  padding: 14px 48px 14px 16px;
+}
+
+.control-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 101, 168, 0.22);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 950;
+}
+
+.game-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(118px, 1fr));
+  gap: 8px;
+  align-self: center;
+}
+
+.game-actions .button {
+  min-width: 0;
+}
+
+.flight-copy,
+.flight-readout {
+  align-self: center;
+}
+
+.flight-copy {
+  grid-column: 1 / -1;
+}
+
+.flight-readout {
+  text-align: left;
+}
+
+.controls-reopen {
+  position: absolute;
+  left: clamp(34px, 5vw, 58px);
+  bottom: 20px;
+  z-index: 8;
+}
+
+body.controls-hidden .flight-deck {
+  display: none;
+}
+
+body.controls-hidden .quick-destinations {
+  bottom: 22px;
+}
+
+body.docking-active .mission-control {
+  cursor: progress;
+}
+
+.launch-sequence.docking-sequence {
+  border-color: rgba(255, 101, 168, 0.82);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 52px rgba(255, 101, 168, 0.28);
+}
+
+body.project-docked .sandbox-stage {
+  border-color: rgba(199, 255, 91, 0.8);
+  box-shadow:
+    0 0 0 2px rgba(199, 255, 91, 0.18),
+    0 28px 90px rgba(0, 0, 0, 0.5);
 }
 
 .quick-destinations {
   position: absolute;
   left: clamp(34px, 5vw, 58px);
-  bottom: 108px;
+  bottom: 18px;
   z-index: 6;
-  width: min(330px, calc(100% - 32px));
+  width: min(220px, calc(100% - 32px));
+}
+
+.quick-destinations.open #quickDestinationList {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  left: 0;
+  max-height: 42svh;
 }
 
 .launch-sequence {
@@ -2017,12 +2130,34 @@ body.manual-flight .mission-hud {
     margin-top: 12px;
   }
 
+  .flight-deck {
+    grid-template-columns: 1fr;
+    padding: 16px 46px 16px 16px;
+  }
+
+  .game-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .controls-reopen {
+    position: relative;
+    inset: auto;
+    width: fit-content;
+    margin-top: 12px;
+  }
+
   .quick-destinations {
     position: relative;
     inset: auto;
     width: min(100%, 680px);
     margin-top: 12px;
     top: auto;
+  }
+
+  .quick-destinations.open #quickDestinationList {
+    position: static;
+    max-height: 46svh;
   }
 
   .mobile-flight-pad {
@@ -2058,6 +2193,10 @@ body.manual-flight .mission-hud {
     align-items: flex-start;
   }
 
+  .game-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .mobile-flight-pad {
     display: grid;
     width: min(240px, 100%);
@@ -2086,6 +2225,25 @@ body.manual-flight .mission-hud {
   .hologram-panel,
   .commander-card {
     padding: 18px;
+  }
+
+  .flight-deck {
+    gap: 12px;
+    padding: 16px 14px 14px;
+  }
+
+  .control-close {
+    top: 8px;
+    right: 8px;
+  }
+
+  .game-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .sandbox-stage iframe {
+    min-height: 360px;
+    height: 58vh;
   }
 
   .nav-links {

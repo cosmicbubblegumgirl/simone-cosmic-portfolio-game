@@ -56,10 +56,9 @@
             <p class="eyebrow">Mission Control</p>
             <h1>Hi, I'm Simon&eacute;. Let's explore my project universe.</h1>
             <p class="hero-text">
-              This portfolio is my universe: every planet, station, and signal leads
-              to a live project sandbox, SAP proof point, creative build, or polished
-              front-end experiment. Start at Mission Control, launch the ship, and
-              explore the work like a journey.
+              Every planet, station, and signal leads to one of my live project
+              sandboxes, SAP proof points, or creative builds. Launch, target a
+              destination, and dock into the work below.
             </p>
             <div class="hero-actions" aria-label="Mission launch actions">
               <button class="button primary" id="beginExploration" type="button">Launch Portfolio</button>
@@ -111,15 +110,25 @@
         </aside>
 
         <div class="flight-deck" aria-label="Flight controls">
-          <div>
+          <button class="control-close" id="closeControls" type="button" aria-label="Hide game controls">X</button>
+          <div class="flight-copy">
             <strong>Flight controls</strong>
             <span>Drag space, use WASD/arrows, or tap the flight pad to pilot. Click a planet, station, or moon to inspect it.</span>
           </div>
+          <div class="game-actions" aria-label="Game actions">
+            <button class="button small" id="targetNext" type="button">Target next</button>
+            <button class="button small primary" id="sparkleTrigger" type="button">Fire sparkles</button>
+            <button class="button small" id="dockProject" type="button">Dock</button>
+            <button class="button small ghost" id="disengageProject" type="button">Disengage</button>
+          </div>
           <div class="flight-readout">
+            <span id="targetName">Target: Deductomatic</span>
             <span id="shipStatus">Autopilot scanning destinations</span>
             <span id="destinationCount">38 destinations online</span>
           </div>
         </div>
+
+        <button class="controls-reopen button small" id="showControls" type="button" hidden>Show controls</button>
 
         <div class="mobile-flight-pad" aria-label="Touch flight controls">
           <button type="button" data-flight="w">W</button>
@@ -152,7 +161,7 @@
           </label>
           <div class="filter-row" id="categoryFilters" aria-label="Project filters"></div>
           <button class="button small" id="shuffleProject" type="button">Surprise me</button>
-          <button class="button small ghost" id="loadVisiblePreviews" type="button">Load visible previews</button>
+          <button class="button small ghost" id="loadVisiblePreviews" type="button">Refresh previews</button>
         </div>
 
         <div class="theatre-layout">
@@ -178,6 +187,7 @@
               <div class="stage-actions">
                 <a class="button small primary" id="stageLive" href="#" target="_blank" rel="noreferrer">Open live site</a>
                 <a class="button small" id="stageRepo" href="#" target="_blank" rel="noreferrer">GitHub repo</a>
+                <button class="button small ghost" id="stageDisengage" type="button">Disengage</button>
               </div>
             </div>
           </aside>

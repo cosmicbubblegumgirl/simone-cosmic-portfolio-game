@@ -461,6 +461,21 @@ const LAUNCH_STEPS = [
 ];
 
 const DOCK_MESSAGE_MS = 2400;
+const DOCK_ANIMATION_MS = 1400;
+const PROJECT_GLYPHS = {
+  "SAP + Learning": "SAP",
+  Product: "UX",
+  Creative: "ART",
+  Commerce: "SHOP",
+  Wellness: "CALM",
+  Finance: "R",
+  Climate: "CO2",
+  Travel: "MAP",
+  Game: "PLAY",
+  Client: "BRIEF",
+  Portfolio: "CV",
+  Productivity: "FOCUS"
+};
 
 const elements = {
   filters: document.querySelector("#categoryFilters"),
@@ -473,6 +488,7 @@ const elements = {
   stageUrl: document.querySelector("#stageUrl"),
   stageLive: document.querySelector("#stageLive"),
   stageRepo: document.querySelector("#stageRepo"),
+  stageDisengage: document.querySelector("#stageDisengage"),
   shuffle: document.querySelector("#shuffleProject"),
   loadVisible: document.querySelector("#loadVisiblePreviews"),
   copyEmail: document.querySelector("#copyEmail"),
@@ -496,10 +512,17 @@ const elements = {
   holoLive: document.querySelector("#holoLive"),
   holoRepo: document.querySelector("#holoRepo"),
   enterSandbox: document.querySelector("#enterSandbox"),
+  targetNext: document.querySelector("#targetNext"),
+  sparkleTrigger: document.querySelector("#sparkleTrigger"),
+  dockProject: document.querySelector("#dockProject"),
+  disengageProject: document.querySelector("#disengageProject"),
+  closeControls: document.querySelector("#closeControls"),
+  showControls: document.querySelector("#showControls"),
   quickToggle: document.querySelector("#quickToggle"),
   quickDestinationList: document.querySelector("#quickDestinationList"),
   touchFlightButtons: document.querySelectorAll("[data-flight]"),
   dockButton: document.querySelector("[data-dock]"),
+  targetName: document.querySelector("#targetName"),
   shipStatus: document.querySelector("#shipStatus"),
   destinationCount: document.querySelector("#destinationCount")
 };
@@ -513,10 +536,18 @@ const cosmicState = {
   lastPreviewIndex: null,
   destinations: [],
   destinationMeshes: [],
+  sparkleShots: [],
+  impactBursts: [],
   keys: new Set(),
   pointer: { x: 0, y: 0 },
   dragging: false,
   velocity: null,
+  ship: null,
+  sparkleGroup: null,
+  impactGroup: null,
+  disengaged: false,
+  docking: false,
+  docked: false,
   audio: null
 };
 
@@ -603,10 +634,10 @@ function renderProjects() {
             <iframe
               title="${escapeHtml(project.title)} mini sandbox"
               data-src="${escapeHtml(project.url)}"
-              loading="lazy"
+              loading="eager"
               sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"
             ></iframe>
-            <button class="button small preview-button" type="button" data-preview="${index}">Load preview</button>
+            <span class="preview-status">Loading sandbox</span>
           </div>
           <div class="stage-actions">
             <button class="button small primary launch-button" type="button" data-launch="${index}">Launch in stage</button>
@@ -617,6 +648,7 @@ function renderProjects() {
       `;
     })
     .join("");
+  preloadRenderedSandboxes();
 }
 
 function syncSandboxStage(index, scrollStage = false) {
@@ -652,17 +684,35 @@ function selectProject(index, scrollStage = false) {
 function loadMiniPreview(button) {
   const card = button.closest(".project-card");
   const frame = card.querySelector(".mini-preview iframe");
-  if (!frame.src) {
-    frame.src = frame.dataset.src;
-  }
-  button.textContent = "Preview loaded";
-  button.disabled = true;
+  frame.src = frame.dataset.src;
+}
+
+function preloadRenderedSandboxes() {
+  document.querySelectorAll(".project-card .mini-preview iframe").forEach((frame, index) => {
+    const status = frame.closest(".mini-preview")?.querySelector(".preview-status");
+    frame.addEventListener(
+      "load",
+      () => {
+        if (status) status.textContent = "Sandbox live";
+      },
+      { once: true }
+    );
+    window.setTimeout(() => {
+      if (!frame.getAttribute("src")) {
+        frame.src = frame.dataset.src;
+      }
+    }, 180 + index * 90);
+  });
 }
 
 function loadVisiblePreviews() {
-  document.querySelectorAll(".project-card .preview-button:not(:disabled)").forEach((button) => {
-    loadMiniPreview(button);
+  document.querySelectorAll(".project-card .mini-preview iframe").forEach((frame) => {
+    frame.src = frame.dataset.src;
   });
+  elements.loadVisible.textContent = "Previews refreshed";
+  window.setTimeout(() => {
+    elements.loadVisible.textContent = "Refresh previews";
+  }, 1600);
 }
 
 function wireProjectEvents() {
@@ -765,15 +815,104 @@ function setAutoPilot(enabled) {
 function closeLaunchSequence() {
   if (!elements.launchSequence) return;
   elements.launchSequence.classList.remove("active");
+  elements.launchSequence.classList.remove("docking-sequence");
   elements.launchSequence.setAttribute("aria-hidden", "true");
   cosmicState.launching = false;
+  cosmicState.docking = false;
 }
 
 function dockActiveProject() {
-  selectProject(cosmicState.activeIndex, true);
+  beginDocking(cosmicState.activeIndex, "Manual dock requested");
+}
+
+function updateTargetDisplay() {
+  const project = projects[cosmicState.activeIndex] || projects[0];
+  if (elements.targetName) {
+    elements.targetName.textContent = `Target: ${project.title}`;
+  }
+}
+
+function targetNextProject() {
+  const next = (cosmicState.activeIndex + 1) % projects.length;
+  cosmicState.activeIndex = next;
+  updateHologram(next, true);
+  highlightDestination(next);
+  setAutoPilot(true);
+  setMissionHud("Target locked", `I locked onto ${projects[next].title}. Fire sparkles or dock when ready.`, 62);
+  playSoftSignal();
+}
+
+function beginDocking(index = cosmicState.activeIndex, reason = "Docking route active") {
+  const project = projects[index] || projects[0];
+  cosmicState.activeIndex = projects.indexOf(project);
+  cosmicState.docking = true;
+  cosmicState.docked = false;
+  cosmicState.disengaged = false;
+  document.body.classList.add("mission-launched", "docking-active");
+  document.body.classList.remove("project-docked", "project-disengaged");
+  updateHologram(cosmicState.activeIndex, true);
+  highlightDestination(cosmicState.activeIndex);
+
+  if (elements.launchSequence) {
+    const label = elements.launchSequence.querySelector("span");
+    if (label) label.textContent = "Docking sequence";
+    elements.launchSequence.classList.add("active", "docking-sequence");
+    elements.launchSequence.setAttribute("aria-hidden", "false");
+    elements.launchStep.textContent = `Aligning with ${project.title}`;
+    elements.launchMeter.style.width = "38%";
+  }
+
+  setMissionHud("Docking approach", `${reason}: aligning my ship with ${project.title}.`, 72);
+  if (elements.shipStatus) {
+    elements.shipStatus.textContent = `Docking with ${project.title}`;
+  }
+  playSoftSignal();
+
+  window.setTimeout(() => {
+    if (!cosmicState.docking) return;
+    elements.launchStep.textContent = `Docked with ${project.title}`;
+    elements.launchMeter.style.width = "100%";
+    selectProject(cosmicState.activeIndex, true);
+    cosmicState.dockedUntil = Date.now() + DOCK_MESSAGE_MS;
+    cosmicState.docked = true;
+    cosmicState.docking = false;
+    document.body.classList.add("project-docked");
+    document.body.classList.remove("docking-active");
+    setMissionHud("Docking complete", "I opened the selected live sandbox in the project bay below.", 100);
+    window.setTimeout(closeLaunchSequence, 520);
+  }, DOCK_ANIMATION_MS);
+}
+
+function disengageProject() {
+  cosmicState.docking = false;
+  cosmicState.docked = false;
+  cosmicState.disengaged = true;
   closeLaunchSequence();
+  document.body.classList.remove("docking-active", "project-docked");
+  document.body.classList.add("project-disengaged", "mission-launched");
   cosmicState.dockedUntil = Date.now() + DOCK_MESSAGE_MS;
-  setMissionHud("Docking complete", "I opened the selected live sandbox in the project bay.", 100);
+  setAutoPilot(false);
+  setMissionHud("Disengaged", "I pulled away from the sandbox. Choose another target or fly manually.", 26);
+  if (elements.shipStatus) {
+    elements.shipStatus.textContent = "Disengaged - choose another target or fly manually";
+  }
+  elements.missionControl.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function fireSparkleSignal() {
+  cosmicState.launched = true;
+  document.body.classList.add("mission-launched");
+  setAutoPilot(false);
+  const project = projects[cosmicState.activeIndex] || projects[0];
+  setMissionHud("Sparkle trigger armed", `I fired a sparkle signal toward ${project.title}.`, 70);
+  if (elements.shipStatus) {
+    elements.shipStatus.textContent = `Sparkle signal flying toward ${project.title}`;
+  }
+  if (typeof cosmicState.shootSparkles === "function") {
+    cosmicState.shootSparkles(cosmicState.activeIndex);
+  } else {
+    beginDocking(cosmicState.activeIndex, "Sparkle signal reached target");
+  }
   playSoftSignal();
 }
 
@@ -781,7 +920,10 @@ function runLaunchSequence() {
   if (!elements.launchSequence) return;
 
   cosmicState.launching = true;
+  const label = elements.launchSequence.querySelector("span");
+  if (label) label.textContent = "Launch sequence";
   elements.launchSequence.classList.add("active");
+  elements.launchSequence.classList.remove("docking-sequence");
   elements.launchSequence.setAttribute("aria-hidden", "false");
   LAUNCH_STEPS.forEach((step, index) => {
     window.setTimeout(() => {
@@ -830,6 +972,8 @@ function updateHologram(index, loadPreview = true) {
     cosmicState.lastPreviewIndex = cosmicState.activeIndex;
   }
 
+  updateTargetDisplay();
+
   document.querySelectorAll(".quick-destination").forEach((button) => {
     button.classList.toggle("active", Number(button.dataset.index) === cosmicState.activeIndex);
   });
@@ -845,6 +989,11 @@ function highlightDestination(index) {
     mesh.scale.setScalar(active ? 1.45 : 1);
     if (mesh.material?.emissive) {
       mesh.material.emissiveIntensity = active ? 1.45 : 0.55;
+    }
+  });
+  cosmicState.destinations.forEach((destination, destinationIndex) => {
+    if (destination.reticle) {
+      destination.reticle.visible = destinationIndex === index;
     }
   });
 }
@@ -887,6 +1036,26 @@ function wireCosmicControls() {
 
   elements.enterSandbox.addEventListener("click", () => {
     dockActiveProject();
+  });
+
+  elements.targetNext.addEventListener("click", targetNextProject);
+
+  elements.sparkleTrigger.addEventListener("click", fireSparkleSignal);
+
+  elements.dockProject.addEventListener("click", dockActiveProject);
+
+  elements.disengageProject.addEventListener("click", disengageProject);
+
+  elements.stageDisengage.addEventListener("click", disengageProject);
+
+  elements.closeControls.addEventListener("click", () => {
+    document.body.classList.add("controls-hidden");
+    elements.showControls.hidden = false;
+  });
+
+  elements.showControls.addEventListener("click", () => {
+    document.body.classList.remove("controls-hidden");
+    elements.showControls.hidden = true;
   });
 
   elements.quickToggle.addEventListener("click", () => {
@@ -1050,6 +1219,7 @@ function startCosmicScene() {
 
   const ship = createShip(THREE);
   ship.position.set(0, 0, 14);
+  cosmicState.ship = ship;
   cosmicState.velocity = new THREE.Vector3();
   scene.add(ship);
 
@@ -1057,10 +1227,17 @@ function startCosmicScene() {
   const nebula = createNebula(THREE, reduceMotion ? 160 : 360);
   scene.add(starField, nebula);
 
+  const sparkleGroup = new THREE.Group();
+  const impactGroup = new THREE.Group();
+  scene.add(sparkleGroup, impactGroup);
+  cosmicState.sparkleGroup = sparkleGroup;
+  cosmicState.impactGroup = impactGroup;
+
   const destinationGroup = new THREE.Group();
   scene.add(destinationGroup);
   const destinations = createDestinations(THREE, destinationGroup);
   cosmicState.destinations = destinations;
+  cosmicState.shootSparkles = (index) => launchSparkleShot(THREE, index, ship, destinations);
 
   const raycaster = new THREE.Raycaster();
   const clickMouse = new THREE.Vector2();
@@ -1100,6 +1277,8 @@ function startCosmicScene() {
     destinationGroup.rotation.y = Math.sin(t * 0.08) * 0.08;
 
     moveShip(ship, destinations, reduceMotion);
+    updateSparkleShots(THREE, reduceMotion);
+    updateImpactBursts();
     updateNearestDestination(ship, destinations);
 
     ship.rotation.z = THREE.MathUtils.lerp(ship.rotation.z, -cosmicState.pointer.x * 0.34, 0.04);
@@ -1316,6 +1495,215 @@ function createNebula(THREE, count) {
   );
 }
 
+function createProjectLabel(THREE, text, color) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 256;
+  canvas.height = 128;
+  const context = canvas.getContext("2d");
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.fillStyle = "rgba(5, 8, 19, 0.72)";
+  context.strokeStyle = color.getStyle();
+  context.lineWidth = 5;
+  roundRect(context, 14, 24, 228, 74, 18);
+  context.fill();
+  context.stroke();
+  context.fillStyle = "#ffffff";
+  context.font = "800 34px Inter, Arial, sans-serif";
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillText(text, 128, 62, 202);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  const material = new THREE.SpriteMaterial({
+    map: texture,
+    transparent: true,
+    depthWrite: false
+  });
+  const sprite = new THREE.Sprite(material);
+  sprite.scale.set(4.4, 2.2, 1);
+  return sprite;
+}
+
+function roundRect(context, x, y, width, height, radius) {
+  context.beginPath();
+  context.moveTo(x + radius, y);
+  context.lineTo(x + width - radius, y);
+  context.quadraticCurveTo(x + width, y, x + width, y + radius);
+  context.lineTo(x + width, y + height - radius);
+  context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  context.lineTo(x + radius, y + height);
+  context.quadraticCurveTo(x, y + height, x, y + height - radius);
+  context.lineTo(x, y + radius);
+  context.quadraticCurveTo(x, y, x + radius, y);
+  context.closePath();
+}
+
+function addProjectIdentity(THREE, group, project, color) {
+  const glyph = PROJECT_GLYPHS[project.category] || "WEB";
+  const label = createProjectLabel(THREE, glyph, color);
+  label.position.set(0, 2.55, 0);
+  group.add(label);
+
+  const accentMaterial = new THREE.MeshBasicMaterial({
+    color,
+    transparent: true,
+    opacity: 0.72,
+    wireframe: true
+  });
+
+  if (project.category === "Finance") {
+    const coin = new THREE.Mesh(new THREE.TorusGeometry(0.78, 0.05, 8, 42), accentMaterial);
+    coin.rotation.y = Math.PI / 2;
+    coin.position.set(0, -1.15, 0);
+    coin.userData.orbit = true;
+    group.add(coin);
+  } else if (project.category === "Commerce") {
+    const leafA = new THREE.Mesh(new THREE.SphereGeometry(0.2, 12, 8), accentMaterial);
+    leafA.scale.set(1.8, 0.72, 0.48);
+    leafA.position.set(-0.62, 1.18, 0);
+    const leafB = leafA.clone();
+    leafB.position.x = 0.62;
+    group.add(leafA, leafB);
+  } else if (project.category === "SAP + Learning") {
+    [-0.74, 0, 0.74].forEach((x, step) => {
+      const node = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.28, 0.28), accentMaterial);
+      node.position.set(x, -1.25, step === 1 ? 0.32 : -0.18);
+      node.userData.orbit = true;
+      group.add(node);
+    });
+  } else if (project.category === "Wellness") {
+    const calmRing = new THREE.Mesh(new THREE.TorusGeometry(1.25, 0.025, 8, 52), accentMaterial);
+    calmRing.rotation.x = Math.PI / 2;
+    calmRing.position.y = -0.98;
+    calmRing.userData.orbit = true;
+    group.add(calmRing);
+  } else if (project.category === "Travel") {
+    const compass = new THREE.Mesh(new THREE.ConeGeometry(0.2, 0.72, 4), accentMaterial);
+    compass.rotation.x = Math.PI / 2;
+    compass.position.set(0, -1.2, 0);
+    compass.userData.orbit = true;
+    group.add(compass);
+  } else if (project.category === "Game") {
+    const token = new THREE.Mesh(new THREE.BoxGeometry(0.88, 0.28, 0.18), accentMaterial);
+    token.position.set(0, -1.18, 0);
+    token.userData.orbit = true;
+    group.add(token);
+  }
+}
+
+function createTargetReticle(THREE, color) {
+  const reticle = new THREE.Group();
+  const material = new THREE.MeshBasicMaterial({
+    color,
+    transparent: true,
+    opacity: 0.72,
+    wireframe: true
+  });
+  const outer = new THREE.Mesh(new THREE.TorusGeometry(2.32, 0.035, 8, 80), material);
+  const inner = new THREE.Mesh(new THREE.TorusGeometry(1.84, 0.024, 8, 70), material.clone());
+  inner.rotation.x = Math.PI / 2;
+  outer.userData.orbit = true;
+  inner.userData.orbit = true;
+  reticle.add(outer, inner);
+  reticle.visible = false;
+  return reticle;
+}
+
+function launchSparkleShot(THREE, index, ship, destinations) {
+  const destination = destinations[index];
+  if (!destination || !cosmicState.sparkleGroup) return;
+
+  const start = ship.position.clone().add(new THREE.Vector3(0, 0.18, -2.75));
+  const target = destination.position.clone();
+  const color = new THREE.Color(destination.project.accent || "#ff8fd6");
+  const material = new THREE.MeshBasicMaterial({
+    color,
+    transparent: true,
+    opacity: 0.95
+  });
+  const group = new THREE.Group();
+  const core = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 10), material.clone());
+  group.add(core);
+
+  for (let step = 0; step < 10; step += 1) {
+    const sparkle = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 6), material.clone());
+    sparkle.position.set((Math.random() - 0.5) * 0.9, (Math.random() - 0.5) * 0.9, step * 0.18);
+    sparkle.material.opacity = 0.72 - step * 0.045;
+    group.add(sparkle);
+  }
+
+  group.position.copy(start);
+  cosmicState.sparkleGroup.add(group);
+  cosmicState.sparkleShots.push({
+    group,
+    start,
+    target,
+    targetIndex: index,
+    progress: 0
+  });
+}
+
+function updateSparkleShots(THREE, reduceMotion) {
+  const stepSize = reduceMotion ? 0.09 : 0.035;
+  cosmicState.sparkleShots = cosmicState.sparkleShots.filter((shot) => {
+    shot.progress = Math.min(1, shot.progress + stepSize);
+    const eased = 1 - Math.pow(1 - shot.progress, 3);
+    shot.group.position.lerpVectors(shot.start, shot.target, eased);
+    shot.group.position.y += Math.sin(eased * Math.PI) * 5.2;
+    shot.group.rotation.z += 0.18;
+    shot.group.scale.setScalar(1 + Math.sin(eased * Math.PI) * 0.55);
+
+    if (shot.progress >= 1) {
+      cosmicState.sparkleGroup.remove(shot.group);
+      createImpactBurst(THREE, shot.target, shot.targetIndex);
+      beginDocking(shot.targetIndex, "Sparkle signal reached target");
+      return false;
+    }
+    return true;
+  });
+}
+
+function createImpactBurst(THREE, position, index) {
+  if (!cosmicState.impactGroup) return;
+  const project = projects[index] || projects[0];
+  const color = new THREE.Color(project.accent || "#61f4ff");
+  const material = new THREE.MeshBasicMaterial({
+    color,
+    transparent: true,
+    opacity: 0.86,
+    wireframe: true
+  });
+  const burst = new THREE.Group();
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.025, 8, 48), material);
+  burst.add(ring);
+  for (let step = 0; step < 14; step += 1) {
+    const shard = new THREE.Mesh(new THREE.SphereGeometry(0.055, 8, 6), material.clone());
+    const angle = (step / 14) * Math.PI * 2;
+    shard.position.set(Math.cos(angle) * 0.28, Math.sin(angle) * 0.28, (Math.random() - 0.5) * 0.4);
+    burst.add(shard);
+  }
+  burst.position.copy(position);
+  cosmicState.impactGroup.add(burst);
+  cosmicState.impactBursts.push({ burst, progress: 0 });
+}
+
+function updateImpactBursts() {
+  cosmicState.impactBursts = cosmicState.impactBursts.filter((impact) => {
+    impact.progress += 0.035;
+    impact.burst.scale.setScalar(1 + impact.progress * 9);
+    impact.burst.rotation.z += 0.03;
+    impact.burst.children.forEach((child) => {
+      if (child.material) child.material.opacity = Math.max(0, 0.86 - impact.progress);
+    });
+    if (impact.progress >= 1) {
+      cosmicState.impactGroup.remove(impact.burst);
+      return false;
+    }
+    return true;
+  });
+}
+
 function createDestinations(THREE, parent) {
   const categoryShapes = {
     "SAP + Learning": "station",
@@ -1395,11 +1783,15 @@ function createDestinations(THREE, parent) {
 
     core.userData.index = index;
     core.userData.project = project.title;
+    addProjectIdentity(THREE, group, project, color);
+    const reticle = createTargetReticle(THREE, color);
+    reticle.userData.orbit = true;
+    group.add(reticle);
     group.add(core);
     group.scale.setScalar(project.featured ? 1.55 : 1.35);
     parent.add(group);
     cosmicState.destinationMeshes.push(core);
-    return { project, group, core, position };
+    return { project, group, core, reticle, position };
   });
 }
 
