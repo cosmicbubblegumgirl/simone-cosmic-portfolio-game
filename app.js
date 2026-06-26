@@ -253,6 +253,17 @@ const projects = [
     summary: "I designed a hiring-signal product website with a sharp operational narrative."
   },
   {
+    title: "Resume Radar",
+    repoName: "resume-radar",
+    url: "https://cosmicbubblegumgirl.github.io/resume-radar/",
+    repo: "https://github.com/cosmicbubblegumgirl/resume-radar",
+    category: "Productivity",
+    language: "JavaScript",
+    accent: "#a76cff",
+    featured: true,
+    summary: "I built an ATS-aware resume lab for matching my CV to job posts, checking keywords, repairing PDFs, and tracking applications."
+  },
+  {
     title: "GreenGrid",
     repoName: "greengrid",
     url: "https://cosmicbubblegumgirl.github.io/greengrid/",
