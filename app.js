@@ -33,6 +33,17 @@ const projects = [
     summary: "I built a tax calculator presented as SA Tax Studio 3D, combining practical calculations with a memorable interface."
   },
   {
+    title: "Quirkboards",
+    repoName: "vercel-apps-github-pages",
+    url: "https://cosmicbubblegumgirl.github.io/vercel-apps-github-pages/apps/variation-of-creation/",
+    repo: "https://github.com/cosmicbubblegumgirl/vercel-apps-github-pages/tree/main/apps/variation-of-creation",
+    category: "Creative",
+    language: "JavaScript",
+    accent: "#21d7c4",
+    featured: true,
+    summary: "I built a sleek creative design platform concept that blends Canva-style templates, Figma-style boards and prototypes, AI asset prompts, brand kits, collaboration, and a creator marketplace."
+  },
+  {
     title: "e-Plant Shopping",
     repoName: "e-plantShopping",
     url: "https://cosmicbubblegumgirl.github.io/e-plantShopping/",
