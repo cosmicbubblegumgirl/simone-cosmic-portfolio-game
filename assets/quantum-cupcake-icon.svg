@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Quantum Cupcake Creations icon</title>
+  <desc id="desc">A glowing cupcake with orbit rings and a star, styled for a cosmic digital portfolio.</desc>
+  <defs>
+    <radialGradient id="space" cx="50%" cy="42%" r="72%">
+      <stop offset="0" stop-color="#183a58"/>
+      <stop offset="0.48" stop-color="#081528"/>
+      <stop offset="1" stop-color="#050711"/>
+    </radialGradient>
+    <linearGradient id="frosting" x1="138" y1="118" x2="368" y2="330" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff4ff"/>
+      <stop offset="0.42" stop-color="#61f4ff"/>
+      <stop offset="1" stop-color="#a76cff"/>
+    </linearGradient>
+    <linearGradient id="wrapper" x1="150" y1="308" x2="362" y2="428" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c7ff5b"/>
+      <stop offset="0.55" stop-color="#61f4ff"/>
+      <stop offset="1" stop-color="#7c8dff"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#space)"/>
+  <circle cx="118" cy="124" r="6" fill="#c7ff5b" opacity="0.9"/>
+  <circle cx="386" cy="116" r="5" fill="#61f4ff" opacity="0.85"/>
+  <circle cx="409" cy="359" r="7" fill="#a76cff" opacity="0.9"/>
+  <path d="M386 172l10 22 23 4-17 16 3 23-20-11-21 10 4-23-16-17 23-3z" fill="#ffe16a" filter="url(#glow)"/>
+  <ellipse cx="256" cy="257" rx="190" ry="54" fill="none" stroke="#61f4ff" stroke-width="12" opacity="0.72" transform="rotate(-18 256 257)"/>
+  <ellipse cx="256" cy="257" rx="190" ry="54" fill="none" stroke="#a76cff" stroke-width="8" opacity="0.7" transform="rotate(18 256 257)"/>
+  <path d="M156 294h200l-28 132H184z" fill="url(#wrapper)"/>
+  <path d="M184 426h144c15 0 28-12 31-27l18-91H135l18 91c3 15 16 27 31 27z" fill="none" stroke="#f7fbff" stroke-width="10" stroke-linejoin="round" opacity="0.9"/>
+  <path d="M184 318l22 104M226 318l10 104M286 318l-10 104M328 318l-22 104" stroke="#071018" stroke-width="9" stroke-linecap="round" opacity="0.5"/>
+  <path d="M152 298c0-29 25-52 56-52 6-50 47-88 98-88 54 0 98 44 98 98 29 5 50 30 50 60 0 38-31 69-69 69H181c-35 0-63-28-63-63 0-12 3-24 9-33 7 6 15 9 25 9z" fill="url(#frosting)" stroke="#f7fbff" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M204 258c17-34 49-53 86-53 34 0 62 17 80 43" fill="none" stroke="#071018" stroke-width="12" stroke-linecap="round" opacity="0.28"/>
+  <path d="M240 138c0-31 28-57 64-57 30 0 54 18 60 43-11-7-25-11-39-11-37 0-67 27-67 60 0 10 3 20 8 29-16-10-26-33-26-64z" fill="#fff4ff" opacity="0.95"/>
+  <circle cx="210" cy="300" r="9" fill="#ffe16a"/>
+  <circle cx="273" cy="277" r="8" fill="#c7ff5b"/>
+  <circle cx="328" cy="315" r="8" fill="#ff8bd1"/>
+  <circle cx="300" cy="238" r="7" fill="#ffffff"/>
+</svg>
