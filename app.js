@@ -275,6 +275,17 @@ const projects = [
     summary: "I built an ATS-aware resume lab for matching my CV to job posts, checking keywords, repairing PDFs, and tracking applications."
   },
   {
+    title: "GreenGrid Action Tracker",
+    repoName: "greengrid-action-tracker",
+    url: "https://cosmicbubblegumgirl.github.io/greengrid-action-tracker/",
+    repo: "https://github.com/cosmicbubblegumgirl/greengrid-action-tracker",
+    category: "Climate",
+    language: "React + TS",
+    accent: "#24c26a",
+    featured: true,
+    summary: "I built a student-team environmental action tracker with animated impact stats, a living grid, quick action logging, challenge paths, and no-shame progress design."
+  },
+  {
     title: "GreenGrid",
     repoName: "greengrid",
     url: "https://cosmicbubblegumgirl.github.io/greengrid/",
