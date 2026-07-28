@@ -1359,6 +1359,45 @@ body.manual-flight #galaxyCanvas {
   color: rgba(234, 249, 255, 0.76);
 }
 
+.hero-profile-lockup {
+  display: inline-grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  margin-bottom: 18px;
+  padding: 8px 12px 8px 8px;
+  border: 1px solid rgba(97, 244, 255, 0.26);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 24px rgba(97, 244, 255, 0.12);
+}
+
+.hero-profile-lockup img {
+  width: 64px;
+  height: 76px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hero-profile-lockup span,
+.hero-profile-lockup small {
+  display: block;
+}
+
+.hero-profile-lockup span {
+  color: #ffffff;
+  font-weight: 950;
+}
+
+.hero-profile-lockup small {
+  margin-top: 3px;
+  color: rgba(234, 249, 255, 0.72);
+  font-size: 0.76rem;
+}
+
 .eyebrow {
   color: var(--teal);
   letter-spacing: 0.08em;
@@ -2015,11 +2054,12 @@ body.manual-flight .mission-hud {
   right: clamp(380px, 35vw, 470px);
   bottom: 14px;
   z-index: 7;
-  align-items: stretch;
   display: grid;
-  grid-template-columns: minmax(136px, 0.8fr) minmax(224px, 1fr) minmax(132px, 0.75fr);
-  gap: 8px;
-  padding: 10px 38px 10px 12px;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: 10px;
+  max-width: 390px;
+  padding: 12px 40px 12px 14px;
 }
 
 .control-close {
@@ -2039,17 +2079,18 @@ body.manual-flight .mission-hud {
 
 .game-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(106px, 1fr));
-  gap: 6px;
-  align-self: center;
+  grid-template-columns: repeat(2, minmax(112px, 1fr));
+  gap: 8px;
+  width: 100%;
 }
 
 .game-actions .button {
   min-width: 0;
-  min-height: 30px;
-  padding: 5px 8px;
+  min-height: 34px;
+  padding: 6px 9px;
   font-size: 0.74rem;
-  white-space: nowrap;
+  line-height: 1.08;
+  white-space: normal;
 }
 
 .flight-copy,
@@ -2058,11 +2099,25 @@ body.manual-flight .mission-hud {
 }
 
 .flight-copy {
-  grid-column: auto;
+  display: grid;
+  gap: 4px;
+  padding-right: 18px;
 }
 
 .flight-readout {
+  display: grid;
+  gap: 4px;
+  padding: 8px 10px;
+  border: 1px solid rgba(97, 244, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
   text-align: left;
+}
+
+.flight-readout span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.28;
 }
 
 .controls-reopen {
@@ -2372,18 +2427,23 @@ body.project-docked .sandbox-stage {
 
   .flight-deck {
     position: absolute;
-    right: 330px;
+    right: auto;
     bottom: 14px;
-    left: 220px;
-    width: auto;
+    left: clamp(198px, 24vw, 236px);
+    width: min(320px, max(260px, calc(100vw - 620px)));
+    min-width: 0;
     margin: 0;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 8px;
     padding: 10px 36px 10px 12px;
   }
 
   .flight-copy {
-    grid-column: 1 / -1;
+    grid-column: auto;
+  }
+
+  .game-actions .button {
+    font-size: 0.68rem;
   }
 
   .controls-reopen {
@@ -2416,6 +2476,14 @@ body.project-docked .sandbox-stage {
   }
 }
 
+@media (min-width: 681px) and (max-width: 780px) {
+  .flight-deck {
+    left: 16px;
+    bottom: 84px;
+    width: 260px;
+  }
+}
+
 @media (max-width: 680px) {
   .site-header {
     position: sticky;
@@ -2433,6 +2501,17 @@ body.project-docked .sandbox-stage {
   .hologram-panel,
   .commander-card {
     padding: 12px;
+  }
+
+  .hero-profile-lockup {
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .hero-profile-lockup img {
+    width: 54px;
+    height: 66px;
   }
 
   .flight-deck {

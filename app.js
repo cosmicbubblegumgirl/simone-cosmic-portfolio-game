@@ -33,6 +33,72 @@ const projects = [
     summary: "I built a tax calculator presented as SA Tax Studio 3D, combining practical calculations with a memorable interface."
   },
   {
+    title: "Syntax Circle",
+    repoName: "syntax-circle",
+    url: "https://cosmicbubblegumgirl.github.io/syntax-circle/",
+    repo: "https://github.com/cosmicbubblegumgirl/syntax-circle",
+    category: "Learning",
+    language: "JavaScript",
+    accent: "#24d6c9",
+    featured: true,
+    summary: "I built a student developer forum with learner accounts, progress tracking, timetables, questions, prep tools, feedback, and peer momentum."
+  },
+  {
+    title: "SAP Experience Accelerator",
+    repoName: "sap-experience-accelerator",
+    url: "https://cosmicbubblegumgirl.github.io/sap-experience-accelerator/",
+    repo: "https://github.com/cosmicbubblegumgirl/sap-experience-accelerator",
+    category: "SAP + Learning",
+    language: "React + TS",
+    accent: "#7f6bff",
+    featured: true,
+    summary: "I created a practical SAP build-home for roadmaps, sandboxes, portfolio evidence, and learning feedback."
+  },
+  {
+    title: "API-ocalypse",
+    repoName: "API-ocalypse",
+    url: "https://cosmicbubblegumgirl.github.io/API-ocalypse/",
+    repo: "https://github.com/cosmicbubblegumgirl/API-ocalypse",
+    category: "SAP + Learning",
+    language: "JavaScript",
+    accent: "#ffbd4a",
+    featured: true,
+    summary: "I built an original SAP Integration Suite and HANA administration practice simulator with system practicals, tutorials, local grading, and guided feedback."
+  },
+  {
+    title: "Umuzi Dreamscape",
+    repoName: "Umuzi_Dreamscape",
+    url: "https://cosmicbubblegumgirl.github.io/Umuzi_Dreamscape/",
+    repo: "https://github.com/cosmicbubblegumgirl/Umuzi_Dreamscape",
+    category: "Learning",
+    language: "React + TS",
+    accent: "#a76cff",
+    featured: true,
+    summary: "I built a learner community workspace for projects, feedback, tasks, stickers, and portfolio evidence."
+  },
+  {
+    title: "Quantum Bloom",
+    repoName: "quantum-bloom",
+    url: "https://cosmicbubblegumgirl.github.io/quantum-bloom/",
+    repo: "https://github.com/cosmicbubblegumgirl/quantum-bloom",
+    category: "Game",
+    language: "JavaScript",
+    accent: "#c7ff5b",
+    featured: true,
+    summary: "I created a playable skyship builder with world layers, resource loops, ship upgrades, and a whimsical restoration theme."
+  },
+  {
+    title: "Original Cosmic Portfolio",
+    repoName: "simone-cosmic-portfolio",
+    url: "https://cosmicbubblegumgirl.github.io/simone-cosmic-portfolio/",
+    repo: "https://github.com/cosmicbubblegumgirl/simone-cosmic-portfolio",
+    category: "Portfolio",
+    language: "JavaScript",
+    accent: "#2f6bff",
+    featured: false,
+    summary: "I kept my earlier interactive cosmic portfolio online as part of the design evolution behind this current build."
+  },
+  {
     title: "Sefirah Atelier",
     repoName: "vercel-apps-github-pages",
     url: "https://cosmicbubblegumgirl.github.io/vercel-apps-github-pages/apps/variation-of-creation/",
@@ -363,7 +429,7 @@ const projects = [
     summary: "I built a South Coast private cab service website with local business presentation."
   },
   {
-    title: "Permit - AI Agent Governance",
+    title: "Permit - Access Governance",
     repoName: "Leash",
     url: "https://cosmicbubblegumgirl.github.io/Leash/",
     repo: "https://github.com/cosmicbubblegumgirl/Leash",
@@ -371,7 +437,7 @@ const projects = [
     language: "JavaScript",
     accent: "#2f6bff",
     featured: false,
-    summary: "I created a product concept around AI agent governance and permissioning."
+    summary: "I created a product concept around permissioning, access rules, and accountable system control."
   },
   {
     title: "QuantumCupCakeCreations",
@@ -455,6 +521,7 @@ const projects = [
 const categories = [
   "All",
   "SAP + Learning",
+  "Learning",
   "Product",
   "Creative",
   "Commerce",
