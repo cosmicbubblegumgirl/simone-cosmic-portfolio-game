@@ -937,7 +937,7 @@ function renderProjects() {
             <iframe
               title="${escapeHtml(project.title)} mini sandbox"
               data-src="${escapeHtml(project.url)}"
-              loading="eager"
+              loading="lazy"
               sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"
             ></iframe>
             <span class="preview-status">Loading sandbox</span>
@@ -991,8 +991,13 @@ function loadMiniPreview(button) {
 }
 
 function preloadRenderedSandboxes() {
-  document.querySelectorAll(".project-card .sandbox-preload iframe").forEach((frame, index) => {
+  const frames = Array.from(document.querySelectorAll(".project-card .sandbox-preload iframe"));
+  if (!frames.length) return;
+
+  const loadFrame = (frame) => {
+    if (!frame || frame.getAttribute("src")) return;
     const status = frame.closest(".sandbox-preload")?.querySelector(".preview-status");
+    if (status) status.textContent = "Loading preview";
     frame.addEventListener(
       "load",
       () => {
@@ -1000,12 +1005,26 @@ function preloadRenderedSandboxes() {
       },
       { once: true }
     );
-    window.setTimeout(() => {
-      if (!frame.getAttribute("src")) {
-        frame.src = frame.dataset.src;
-      }
-    }, 180 + index * 90);
-  });
+    frame.src = frame.dataset.src;
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    frames.slice(0, 2).forEach(loadFrame);
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        loadFrame(entry.target);
+        observer.unobserve(entry.target);
+      });
+    },
+    { rootMargin: "240px 0px", threshold: 0.01 }
+  );
+
+  frames.forEach((frame) => observer.observe(frame));
 }
 
 function loadVisiblePreviews() {
