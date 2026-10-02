@@ -1,5 +1,49 @@
 const projects = [
   {
+    title: "Launell Govender Impact Portfolio",
+    repoName: "launellGovender",
+    url: "https://launellgovender.com/",
+    repo: "https://github.com/cosmicbubblegumgirl/launellGovender",
+    category: "Client",
+    language: "JavaScript",
+    accent: "#00a6a6",
+    featured: false,
+    summary: "I built a professional impact portfolio for a key accounts specialist, translating career evidence and achievements into a polished responsive web presence."
+  },
+  {
+    title: "MoodGarden",
+    repoName: "MoodGarden",
+    url: "https://cosmicbubblegumgirl.github.io/MoodGarden/",
+    repo: "https://github.com/cosmicbubblegumgirl/MoodGarden",
+    category: "Wellness",
+    language: "JavaScript",
+    accent: "#a76cff",
+    featured: false,
+    summary: "I created a music-therapy inspired wellbeing project that explores mood through a gentle interactive web experience."
+  },
+  {
+    title: "Express Book Reviews",
+    repoName: "expressBookReviews",
+    url: "https://cosmicbubblegumgirl.github.io/expressBookReviews/",
+    repo: "https://github.com/cosmicbubblegumgirl/expressBookReviews",
+    category: "Learning",
+    language: "JavaScript",
+    accent: "#ffbd4a",
+    featured: false,
+    summary: "I built a book review project while practising JavaScript and Node.js concepts, presenting book data and review-oriented interactions in a browser-accessible demo."
+  },
+  {
+    title: "Jens Interior Decor & Construction",
+    repoName: "jens-decor-and-construction-demo",
+    url: "https://cosmicbubblegumgirl.github.io/jens-decor-and-construction-demo/",
+    repo: "https://github.com/cosmicbubblegumgirl/jens-decor-and-construction-demo",
+    category: "Client",
+    language: "JavaScript",
+    accent: "#4f9b36",
+    featured: false,
+    summary: "I built a client-facing interior decor and construction website with service presentation, visual project storytelling, and responsive navigation."
+  },
+  {
     title: "Quantum Jump",
     repoName: "four-bright-ideas",
     url: "https://cosmicbubblegumgirl.github.io/four-bright-ideas/quantum-jump/",
